@@ -17,6 +17,8 @@ public class Song {
     private int currentRank;
     private Date mIssueDate;
 
+    private String mGenre;
+
     public Song() {
         mId = UUID.randomUUID();
         mIssueDate = new Date();
@@ -76,5 +78,13 @@ public class Song {
 
     public void setIssueDate(Date issueDate) {
         mIssueDate = issueDate;
+    }
+
+    public String getGenre() {
+        return mGenre;
+    }
+
+    public void setGenre(String genre) {
+        mGenre = genre;
     }
 }

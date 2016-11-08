@@ -6,25 +6,35 @@
     android:layout_height="wrap_content"
     android:background="@drawable/widget_bottom_border">
 
-    <TextView
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="20sp"
-        tools:text="Genre" />
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_weight="0.5"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="20sp"
-        tools:text="No" />
+        <TextView
+            android:id="@+id/list_item_current_rank"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center|bottom"
+            android:textSize="20sp"
+            tools:text="No" />
+
+        <TextView
+            android:id="@+id/list_item_genre"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            android:gravity="center"
+            tools:text="genre"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="3"
+        android:layout_weight="4.3"
         android:orientation="vertical"
         android:layout_height="match_parent">
 
@@ -34,6 +44,12 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             style="@style/Song.Name.TextAppearance"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:maxLines="1"
+            android:focusableInTouchMode="true"
+            android:singleLine="true"
             tools:text="songName"/>
 
         <LinearLayout

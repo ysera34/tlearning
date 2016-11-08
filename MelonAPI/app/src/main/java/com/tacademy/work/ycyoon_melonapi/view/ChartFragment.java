@@ -84,7 +84,6 @@ public class ChartFragment extends Fragment {
         });
 
         mTabLayout.setupWithViewPager(mViewPager);
-
         return view;
     }
 

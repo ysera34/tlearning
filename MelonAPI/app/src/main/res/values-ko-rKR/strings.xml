@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_genre">장르 검색</string>
+    <string name="genre_all">종합</string>
+    <string name="genre_kpop">가요</string>
+    <string name="genre_pop">팝</string>
+    <string name="genre_ost">OST</string>
+    <string name="genre_jpop">J-POP</string>
+    <string name="genre_classic">클래식</string>
+    <string name="genre_ccm">CCM</string>
+    <string name="genre_kids">어린이</string>
+    <string name="genre_newage">뉴에이지</string>
+    <string name="genre_jazz">JAZZ</string>
+    <string name="genre_world">월드</string>
+    <string name="genre_faith">종교음악</string>
+    <string name="genre_traditional">국악</string>
+    <string name="genre_chinese">중국음악</string>
+</resources>

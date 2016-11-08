@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">YCYoon_MelonAPI</string>
+    <string name="collapsingtoolbarlayout_textview">CollapsingToolbarLayout_TextView</string>
+    <string name="search_genre">search genre chart</string>
+    <string name="genre_all">genre_all</string>
+    <string name="genre_kpop">genre_kpop</string>
+    <string name="genre_pop">genre_pop</string>
+    <string name="genre_ost">genre_ost</string>
+    <string name="genre_jpop">genre_jpop</string>
+    <string name="genre_classic">genre_classic</string>
+    <string name="genre_ccm">genre_ccm</string>
+    <string name="genre_kids">genre_kids</string>
+    <string name="genre_newage">genre_newage</string>
+    <string name="genre_jazz">genre_jazz</string>
+    <string name="genre_world">genre_world</string>
+    <string name="genre_faith">genre_faith</string>
+    <string name="genre_traditional">genre_traditional</string>
+    <string name="genre_chinese">genre_chinese</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/search_genre"
+        android:title="@string/search_genre">
+        <menu>
+            <item android:id="@+id/genre_all"
+                android:title="@string/genre_all"/>
+            <item android:id="@+id/genre_kpop"
+                android:title="@string/genre_kpop"/>
+            <item android:id="@+id/genre_pop"
+                android:title="@string/genre_pop"/>
+            <item android:id="@+id/genre_ost"
+                android:title="@string/genre_ost"/>
+            <item android:id="@+id/genre_jpop"
+                android:title="@string/genre_jpop"/>
+            <item android:id="@+id/genre_classic"
+                android:title="@string/genre_classic"/>
+            <item android:id="@+id/genre_ccm"
+                android:title="@string/genre_ccm"/>
+            <item android:id="@+id/genre_kids"
+                android:title="@string/genre_kids"/>
+            <item android:id="@+id/genre_newage"
+                android:title="@string/genre_newage"/>
+            <item android:id="@+id/genre_jazz"
+                android:title="@string/genre_jazz"/>
+            <item android:id="@+id/genre_world"
+                android:title="@string/genre_world"/>
+            <item android:id="@+id/genre_faith"
+                android:title="@string/genre_faith"/>
+            <item android:id="@+id/genre_traditional"
+                android:title="@string/genre_traditional"/>
+            <item android:id="@+id/genre_chinese"
+                android:title="@string/genre_chinese"/>
+        </menu>
+    </item>
+</menu>

@@ -1,7 +1,9 @@
 package com.tacademy.work.ycyoon_melonapi.view;
 
 import android.app.ProgressDialog;
+import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tacademy.work.ycyoon_melonapi.R;
 import com.tacademy.work.ycyoon_melonapi.common.BaseConnection;
@@ -54,6 +57,7 @@ public class PopChartListFragment extends Fragment
         mPopChartRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refresh_progress, null));
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -79,14 +83,15 @@ public class PopChartListFragment extends Fragment
         new PopChartTask().execute(BaseConnection.URL_CHARTS_REALTIME, "20", "1");
     }
 
-    private void updateUI() {
-
-        if (mPopChartAdapter == null) {
-            mPopChartAdapter = new PopChartAdapter(mSongs);
-            mPopChartRecyclerView.setAdapter(mPopChartAdapter);
-        } else {
-            mPopChartAdapter.notifyDataSetChanged();
-        }
+    private void updateUI(ArrayList<Song> songs) {
+        mPopChartAdapter = new PopChartAdapter(songs);
+        mPopChartRecyclerView.setAdapter(mPopChartAdapter);
+//        if (mPopChartAdapter == null) {
+//            mPopChartAdapter = new PopChartAdapter(mSongs);
+//            mPopChartRecyclerView.setAdapter(mPopChartAdapter);
+//        } else {
+//            mPopChartAdapter.notifyDataSetChanged();
+//        }
     }
 
     private class PopChartAdapter extends RecyclerView.Adapter<PopChartHolder> {
@@ -116,18 +121,21 @@ public class PopChartListFragment extends Fragment
         }
     }
 
-    private class PopChartHolder extends RecyclerView.ViewHolder {
+    private class PopChartHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private Song mSong;
         private TextView mCurrentRankTextView;
         private TextView mSongNameTextView;
         private TextView mArtistNameTextView;
+        private TextView mAlbumNameTextView;
 
         public PopChartHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mCurrentRankTextView = (TextView) itemView.findViewById(R.id.list_item_current_rank);
             mSongNameTextView = (TextView) itemView.findViewById(R.id.list_item_song_name);
             mArtistNameTextView = (TextView) itemView.findViewById(R.id.list_item_artist_name);
+            mAlbumNameTextView = (TextView) itemView.findViewById(R.id.list_item_album_name);
         }
 
         public void bindSong(Song song) {
@@ -136,6 +144,23 @@ public class PopChartListFragment extends Fragment
             mSongNameTextView.setText(mSong.getSongName());
             mSongNameTextView.setSelected(true);
             mArtistNameTextView.setText(mSong.getArtistName());
+            mAlbumNameTextView.setText(mSong.getAlbumName());
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                SimpleDateFormat transFormat = new SimpleDateFormat(("yyyyMMHH"));
+                String issueDate = transFormat.format(mSong.getIssueDate());
+
+                String songIssueMessage =
+                        getString(R.string.song_issue_date_toast, mSong.getSongName(), issueDate);
+                Toast.makeText(getActivity(), songIssueMessage, Toast.LENGTH_SHORT).show();
+            } else {
+                String songInfoMessage =
+                        getString(R.string.song_info_toast, mSong.getSongName(), mSong.getArtistName());
+                Toast.makeText(getActivity(), songInfoMessage, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -166,8 +191,13 @@ public class PopChartListFragment extends Fragment
                 mProgressDialog.dismiss();
             }
             mSwipeRefreshLayout.setRefreshing(false);
-            mSongs = songs;
-            updateUI();
+            if (songs.size() != 0) {
+                mSongs = songs;
+                updateUI(mSongs);
+            } else {
+                Toast.makeText(getActivity(),
+                        getString(R.string.request_no_data), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

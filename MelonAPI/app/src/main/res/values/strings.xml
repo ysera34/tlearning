@@ -16,4 +16,10 @@
     <string name="genre_faith">genre_faith</string>
     <string name="genre_traditional">genre_traditional</string>
     <string name="genre_chinese">genre_chinese</string>
+
+    <string name="song_issue_date_toast">song name :  %1$s, issue date : %2$s </string>
+    <string name="song_info_toast">song name : %1$s, singer : %2$s </string>
+
+    <string name="request_no_data">do not have some data from request</string>
+
 </resources>

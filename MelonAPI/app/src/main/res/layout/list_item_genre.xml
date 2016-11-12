@@ -76,6 +76,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:paddingEnd="5dp"
+                    android:maxLines="1"
                     android:gravity="end"
                     tools:text="albumName"/>
 
@@ -86,7 +88,6 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     tools:text="issueDate"/>
-
 
             </LinearLayout>
         </LinearLayout>

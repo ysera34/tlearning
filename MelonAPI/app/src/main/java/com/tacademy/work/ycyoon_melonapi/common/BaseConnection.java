@@ -1,5 +1,9 @@
 package com.tacademy.work.ycyoon_melonapi.common;
 
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
+import android.util.Log;
+
 import com.tacademy.work.ycyoon_melonapi.model.Song;
 
 import org.json.JSONArray;
@@ -11,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -64,6 +69,20 @@ public class BaseConnection {
                         song.setSongId(songObject.getInt("songId"));
                         song.setSongName(songObject.getString("songName"));
                         song.setCurrentRank(songObject.getInt("currentRank"));
+                        song.setAlbumName(songObject.getString("albumName"));
+
+                        try {
+                            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+                                String issueDate = songObject.getString("issueDate");
+                                SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
+                                song.setIssueDate(transFormat.parse(issueDate));
+                            }
+                            else{
+
+                            }
+                        } catch (ParseException e) {
+                            Log.d("ParseException", e.getMessage());
+                        }
 
                         JSONObject artistsObject = songObject.getJSONObject("artists");
                         JSONArray artistArray = artistsObject.getJSONArray("artist");
@@ -75,10 +94,13 @@ public class BaseConnection {
                     }
                 }
             }
+            httpURLConnection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+
         }
         return mSongs;
     }
@@ -116,6 +138,20 @@ public class BaseConnection {
                         song.setSongId(songObject.getInt("songId"));
                         song.setSongName(songObject.getString("songName"));
                         song.setCurrentRank(songObject.getInt("currentRank"));
+                        song.setAlbumName(songObject.getString("albumName"));
+
+                        try {
+                            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+                                String issueDate = songObject.getString("issueDate");
+                                SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
+                                song.setIssueDate(transFormat.parse(issueDate));
+                            }
+                            else{
+
+                            }
+                        } catch (ParseException e) {
+                            Log.d("ParseException", e.getMessage());
+                        }
 
                         JSONObject artistsObject = songObject.getJSONObject("artists");
                         JSONArray artistArray = artistsObject.getJSONArray("artist");
@@ -127,6 +163,7 @@ public class BaseConnection {
                     }
                 }
             }
+            httpURLConnection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

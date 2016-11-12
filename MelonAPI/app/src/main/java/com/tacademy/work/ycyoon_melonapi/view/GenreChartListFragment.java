@@ -1,7 +1,9 @@
 package com.tacademy.work.ycyoon_melonapi.view;
 
 import android.app.ProgressDialog;
+import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tacademy.work.ycyoon_melonapi.R;
 import com.tacademy.work.ycyoon_melonapi.common.BaseConnection;
@@ -60,6 +63,7 @@ public class GenreChartListFragment extends Fragment
         mGenreChartRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refresh_progress, null));
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -126,20 +130,23 @@ public class GenreChartListFragment extends Fragment
         }
     }
 
-    private class GenreChartHolder extends RecyclerView.ViewHolder {
+    private class GenreChartHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Song mSong;
         private TextView mCurrentRankTextView;
         private TextView mGenreTextView;
         private TextView mSongNameTextView;
         private TextView mArtistNameTextView;
+        private TextView mAlbumNameTextView;
 
         public GenreChartHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mCurrentRankTextView = (TextView) itemView.findViewById(R.id.list_item_current_rank);
             mGenreTextView = (TextView) itemView.findViewById(R.id.list_item_genre);
             mSongNameTextView = (TextView) itemView.findViewById(R.id.list_item_song_name);
             mArtistNameTextView = (TextView) itemView.findViewById(R.id.list_item_artist_name);
+            mAlbumNameTextView = (TextView) itemView.findViewById(R.id.list_item_album_name);
         }
 
         public void bindSong(Song song) {
@@ -149,6 +156,23 @@ public class GenreChartListFragment extends Fragment
             mSongNameTextView.setText(mSong.getSongName());
             mSongNameTextView.setSelected(true);
             mArtistNameTextView.setText(mSong.getArtistName());
+            mAlbumNameTextView.setText(mSong.getAlbumName());
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                SimpleDateFormat transFormat = new SimpleDateFormat(("yyyyMMHH"));
+                String issueDate = transFormat.format(mSong.getIssueDate());
+
+                String songIssueMessage =
+                        getString(R.string.song_issue_date_toast, mSong.getSongName(), issueDate);
+                Toast.makeText(getActivity(), songIssueMessage, Toast.LENGTH_SHORT).show();
+            } else {
+                String songInfoMessage =
+                        getString(R.string.song_info_toast, mSong.getSongName(), mSong.getArtistName());
+                Toast.makeText(getActivity(), songInfoMessage, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -162,61 +186,61 @@ public class GenreChartListFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.genre_all ://DP0000
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0000", "20", "1");
+            case R.id.genre_all :
                 mGenreCode = "DP0000";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_kpop ://DP0100
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0100", "20", "1");
+            case R.id.genre_kpop :
                 mGenreCode = "DP0100";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_pop ://DP0200
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0200", "20", "1");
+            case R.id.genre_pop :
                 mGenreCode = "DP0200";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_ost ://DP0300
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0300", "20", "1");
+            case R.id.genre_ost :
                 mGenreCode = "DP0300";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_jpop ://DP0400
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0400", "20", "1");
+            case R.id.genre_jpop :
                 mGenreCode = "DP0400";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_classic ://DP0500
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0500", "20", "1");
+            case R.id.genre_classic :
                 mGenreCode = "DP0500";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_ccm ://DP0600
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0600", "20", "1");
+            case R.id.genre_ccm :
                 mGenreCode = "DP0600";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_kids ://DP0700
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0700", "20", "1");
+            case R.id.genre_kids :
                 mGenreCode = "DP0700";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_newage ://DP0800
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0800", "20", "1");
+            case R.id.genre_newage :
                 mGenreCode = "DP0800";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_jazz ://DP0900
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP0900", "20", "1");
+            case R.id.genre_jazz :
                 mGenreCode = "DP0900";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_world ://DP1000
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP1000", "20", "1");
+            case R.id.genre_world :
                 mGenreCode = "DP1000";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_faith ://DP1100
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP1100", "20", "1");
+            case R.id.genre_faith :
                 mGenreCode = "DP1100";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_traditional ://DP1200
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP1200", "20", "1");
+            case R.id.genre_traditional :
                 mGenreCode = "DP1200";
+                refreshRequest(mGenreCode);
                 return true;
-            case R.id.genre_chinese ://DP1300
-                new GenreChartTask().execute(BaseConnection.URL_CHARTS_GENRE, "DP1300", "20", "1");
+            case R.id.genre_chinese :
                 mGenreCode = "DP1300";
+                refreshRequest(mGenreCode);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -251,8 +275,13 @@ public class GenreChartListFragment extends Fragment
                 mProgressDialog.dismiss();
             }
             mSwipeRefreshLayout.setRefreshing(false);
-            mSongs = songs;
-            updateUI(mSongs);
+            if (songs.size() != 0) {
+                mSongs = songs;
+                updateUI(mSongs);
+            } else {
+                Toast.makeText(getActivity(),
+                        getString(R.string.request_no_data), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

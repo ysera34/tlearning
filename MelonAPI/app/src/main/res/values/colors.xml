@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#657396</color>
     <color name="colorAccent">#F5C9C8</color>
     <color name="colorBorder">#88AAAAAA</color>
+
+    <color name="refresh_progress">@color/colorAccent</color>
 </resources>

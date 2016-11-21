@@ -3,6 +3,9 @@
     <color name="colorPrimary">#a4ca5a</color>
     <color name="colorPrimaryDark">#6c9805</color>
     <color name="colorAccent">#FDEA3B</color>
+    <color name="theme_primary_dark">#6941bc</color>
+    <color name="colorActionBackground">#FB8C00</color>
+
     <!--<color name="colorAccent">#e91e63</color>-->
     <color name="colorWhiteBackground">#ffffff</color>
     <color name="colorBackground">#eeeeee</color>

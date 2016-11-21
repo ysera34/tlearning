@@ -6,7 +6,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,6 +26,10 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
     private ArrayList<TestModel> mModels;
     private RecyclerView mTestRecyclerView;
     private ActionModeAdapter mActionModeAdapter;
+
+    private TextView mActionModeTestTextView;
+    private int mActionCount = 0;
+    private boolean mActionModeActive = false;
 
     public static Fragment newInstance() {
 
@@ -55,6 +62,7 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View view = layoutInflater.inflate(R.layout.fragment_action_mode, container, false);
         (view.findViewById(R.id.action_mode_button)).setOnClickListener(this);
+        mActionModeTestTextView = (TextView) view.findViewById(R.id.action_mode_test_text_view);
 
         mTestRecyclerView = (RecyclerView) view.findViewById(R.id.action_mode_recycler_view);
         mTestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,6 +74,8 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         mActionModeAdapter = new ActionModeAdapter(mModels);
         mTestRecyclerView.setAdapter(mActionModeAdapter);
+
+        mActionModeTestTextView.setText("0");
     }
 
     @Override
@@ -73,9 +83,46 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         switch (view.getId()) {
             case R.id.action_mode_button :
                 Toast.makeText(getActivity(), "Action Mode Button", Toast.LENGTH_SHORT).show();
+                if(!mActionModeActive) {
+                    getActivity().startActionMode(mActionModeCallback);
+                    mActionModeActive = true;
+                }
                 break;
         }
     }
+
+    //action mode (ActionMode.Callback implements)
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            getActivity().getMenuInflater().inflate(R.menu.menu_action_mode, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            ((MainActivity) getContext()).getSupportActionBar().hide();
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_mode_settings1:
+                    mActionCount++;
+                    mActionModeTestTextView.setText(String.valueOf(mActionCount));
+                    mode.finish();
+                    return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            ((MainActivity) getContext()).getSupportActionBar().show();
+            mActionModeActive = false;
+        }
+    };
 
     private class ActionModeAdapter extends RecyclerView.Adapter<ActionModeHolder> {
 

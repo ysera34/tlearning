@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Action01</string>
+
+    <string name="hello_world">Hello World</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
+    <string name="forward">Forward</string>
+
+</resources>

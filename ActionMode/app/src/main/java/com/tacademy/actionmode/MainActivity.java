@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getWindow().requestFeature(Window.FEATURE_ACTION_MODE_OVERLAY);
+//        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,6 +57,44 @@ public class MainActivity extends AppCompatActivity
                     .add(R.id.fragment_container, mFragmentContainer)
                     .commit();
         }
+
+
+    /*
+        startSupportActionMode(new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                // Inflate our menu from a resource file
+                actionMode.getMenuInflater().inflate(R.menu.menu_action_mode, menu);
+
+                // Return true so that the action mode is shown
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                // As we do not need to modify the menu before displayed, we return false.
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                // Similar to menu handling in Activity.onOptionsItemSelected()
+                switch (menuItem.getItemId()) {
+                    case R.id.action_mode_settings1:
+                        // Some remove functionality
+                        Toast.makeText(getApplicationContext(), "hello action mode", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+                // Allows you to be notified when the action mode is dismissed
+            }
+        });
+        */
     }
 
     @Override

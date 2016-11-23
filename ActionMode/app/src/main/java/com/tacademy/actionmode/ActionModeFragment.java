@@ -1,5 +1,6 @@
 package com.tacademy.actionmode;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -93,15 +94,22 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
 
     //action mode (ActionMode.Callback implements)
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        int statusBarColor;
+
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             getActivity().getMenuInflater().inflate(R.menu.menu_action_mode, menu);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                statusBarColor = getActivity().getWindow().getStatusBarColor();
+                getActivity().getWindow().setStatusBarColor(0xFF555555);
+            }
             return true;
         }
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            ((MainActivity) getContext()).getSupportActionBar().hide();
+//            ((MainActivity) getContext()).getSupportActionBar().hide();
             return false;
         }
 
@@ -119,10 +127,24 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            ((MainActivity) getContext()).getSupportActionBar().show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //return to "old" color of status bar
+                getActivity().getWindow().setStatusBarColor(statusBarColor);
+            }
+//            ((MainActivity) getContext()).getSupportActionBar().show();
+
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    ((MainActivity) getContext()).getSupportActionBar().show();
+//                }
+//            }, 300);
+
             mActionModeActive = false;
+//            ((MainActivity) getContext()).getSupportActionBar().show();
         }
     };
+
 
     private class ActionModeAdapter extends RecyclerView.Adapter<ActionModeHolder> {
 

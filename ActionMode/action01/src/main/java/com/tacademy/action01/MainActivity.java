@@ -20,9 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         mContainerFragment = fm.findFragmentById(R.id.fragment_container);
-        mContainerFragment = ItemListFragment.newInstance();
-        fm.beginTransaction()
-                .add(R.id.fragment_container, mContainerFragment)
-                .commit();
+        if (mContainerFragment == null) {
+            mContainerFragment = ItemListFragment.newInstance();
+            fm.beginTransaction()
+                    .add(R.id.fragment_container, mContainerFragment)
+                    .commit();
+        }
     }
 }

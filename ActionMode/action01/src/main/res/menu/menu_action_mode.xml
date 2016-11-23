@@ -4,6 +4,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ic_delete"
+        android:orderInCategory="100"
+        android:title="@string/delete"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/action_copy"
         android:icon="@drawable/ic_copy"
         android:orderInCategory="100"
@@ -17,11 +24,5 @@
         android:title="@string/forward"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/action_delete"
-        android:icon="@drawable/ic_delete"
-        android:orderInCategory="100"
-        android:title="@string/delete"
-        app:showAsAction="always"/>
 
 </menu>

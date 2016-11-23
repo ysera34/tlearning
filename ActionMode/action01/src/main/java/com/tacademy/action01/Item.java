@@ -1,6 +1,7 @@
 package com.tacademy.action01;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Created by yoon on 2016. 11. 22..
@@ -8,12 +9,12 @@ import java.io.Serializable;
 
 public class Item implements Serializable {
 
+    private UUID mId;
     private String title;
     private String subTitle;
 
-    public Item(String title, String subTitle) {
-        this.title = title;
-        this.subTitle = subTitle;
+    public Item() {
+        mId = UUID.randomUUID();
     }
 
     public String getTitle() {

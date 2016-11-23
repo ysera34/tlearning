@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,6 @@ public class ItemListFragment extends Fragment {
     private ArrayList<Item> mItems;
 
     private ActionMode mActionMode;
-
     public static ItemListFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -42,9 +42,13 @@ public class ItemListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mItems = new ArrayList<>();
         for (int i = 0; i < 40; i++) {
-            mItems.add(new Item("Title :" + i, ", SubTitle : " + "sub" + i));
+            Item item = new Item();
+            item.setTitle("title : " + i);
+            item.setSubTitle("sub title : " + i);
+            mItems.add(item);
         }
     }
 
@@ -95,7 +99,8 @@ public class ItemListFragment extends Fragment {
         }
     }
 
-    class ItemHolder extends RecyclerView.ViewHolder {
+    class ItemHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
 
         private Item mItem;
 
@@ -104,6 +109,8 @@ public class ItemListFragment extends Fragment {
 
         public ItemHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.title);
             mSubTitleTextView = (TextView) itemView.findViewById(R.id.sub_title);
@@ -114,24 +121,51 @@ public class ItemListFragment extends Fragment {
             mTitleTextView.setText(mItem.getTitle());
             mSubTitleTextView.setText(mItem.getSubTitle());
         }
+
+        @Override
+        public void onClick(View view) {
+
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+
+            return true;
+        }
     }
 
-    class ActionModeCallback implements ActionMode.Callback {
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
-        private boolean isListViewFragment;
+        private boolean mActiveModeActive = false;
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            return false;
+            mode.getMenuInflater().inflate(R.menu.menu_action_mode, menu);
+            return true;
         }
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
+            menu.findItem(R.id.action_copy).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menu.findItem(R.id.action_forward).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menu.findItem(R.id.action_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            return true;
         }
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete :
+                    Toast.makeText(getActivity(), "action_delete", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.action_copy :
+                    Toast.makeText(getActivity(), "action_copy", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.action_forward :
+                    Toast.makeText(getActivity(), "action_forward", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
             return false;
         }
 
@@ -139,5 +173,6 @@ public class ItemListFragment extends Fragment {
         public void onDestroyActionMode(ActionMode mode) {
 
         }
-    }
+    };
+
 }

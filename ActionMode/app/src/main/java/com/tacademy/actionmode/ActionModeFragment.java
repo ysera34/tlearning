@@ -14,10 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by yoon on 2016. 11. 21..
@@ -113,6 +115,7 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
             return false;
         }
 
@@ -120,6 +123,10 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_delete:
+                    for (TestModel model : mCheckedModels) {
+                        Log.w("mCheckedModels", model.getName());
+                    }
+                    removeModel(mCheckedModels);
                     Toast.makeText(getActivity(), "선택하신 항목이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     mode.finish();
                     return true;
@@ -234,6 +241,17 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
             super(itemView);
 
             mItemCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_check_box);
+            mItemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                    if(isChecked){
+                        mCheckedModels.add(mTestModel);
+                    } else {
+                        mCheckedModels.remove(mTestModel);
+                    }
+                }
+            });
             mNameTextView = (TextView) itemView.findViewById(R.id.list_item_name_text);
             mAgeTextView = (TextView) itemView.findViewById(R.id.list_item_age_text);
         }
@@ -255,12 +273,39 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
 //                        }
 //                    });
         }
+
+    }
+
+    ArrayList<TestModel> mCheckedModels = new ArrayList<>();
+
+    private void removeModel(ArrayList<TestModel> checkedModels) {
+        for (TestModel model : checkedModels) {
+            for (TestModel model1 : mModels) {
+                if (model.getId().equals(model1.getId())) {
+                    mModels.remove(model1);
+                    break;
+                }
+            }
+        }
     }
 
     private class TestModel {
 
+        private UUID mId;
         private String name;
         private int age;
+
+        public TestModel() {
+            mId = UUID.randomUUID();
+        }
+
+        public UUID getId() {
+            return mId;
+        }
+
+        public void setId(UUID id) {
+            mId = id;
+        }
 
         public String getName() {
             return name;

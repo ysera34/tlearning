@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,6 +106,8 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
                 statusBarColor = getActivity().getWindow().getStatusBarColor();
                 getActivity().getWindow().setStatusBarColor(0xFFEEEEEE);
             }
+            mActionModeAdapter.notifyItemRangeChanged(0, mModels.size());
+            mActionModeAdapter.notifyDataSetChanged();
             return true;
         }
 
@@ -130,6 +133,8 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
                 getActivity().getWindow().setStatusBarColor(statusBarColor);
             }
             mActionModeActive = false;
+            mActionModeAdapter.notifyItemRangeChanged(0, mModels.size());
+            mActionModeAdapter.notifyDataSetChanged();
         }
     };
 
@@ -154,8 +159,7 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         return super.onOptionsItemSelected(item);
     }
 
-
-    private class ActionModeAdapter extends RecyclerView.Adapter<ActionModeHolder> {
+    private class ActionModeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private ArrayList<TestModel> mTestModels;
 
@@ -164,16 +168,30 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         }
 
         @Override
-        public ActionModeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(R.layout.list_item_action_mode, parent, false);
-            return new ActionModeHolder(view);
+            if (mActionModeActive) {
+//                return new ActionModeHolder(view);
+                ActionModeHolder holder = new ActionModeHolder(view);
+                holder.setIsRecyclable(false);
+                return holder;
+            } else {
+//                return new StaticModeHolder(view);
+                StaticModeHolder holder = new StaticModeHolder(view);
+                holder.setIsRecyclable(false);
+                return holder;
+            }
         }
 
         @Override
-        public void onBindViewHolder(ActionModeHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             TestModel testModel = mTestModels.get(position);
-            holder.bindTestModel(testModel);
+            if (mActionModeActive && holder instanceof ActionModeHolder) {
+                ((ActionModeHolder) holder).bindTestModel(testModel);
+            } else if (!mActionModeActive && holder instanceof StaticModeHolder) {
+                ((StaticModeHolder) holder).bindTestModel(testModel);
+            }
         }
 
         @Override
@@ -182,15 +200,17 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private class ActionModeHolder extends RecyclerView.ViewHolder {
+    private class StaticModeHolder extends RecyclerView.ViewHolder {
 
         private TestModel mTestModel;
+        private CheckBox mItemCheckBox;
         private TextView mNameTextView;
         private TextView mAgeTextView;
 
-        public ActionModeHolder(View itemView) {
+        public StaticModeHolder(View itemView) {
             super(itemView);
 
+            mItemCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_check_box);
             mNameTextView = (TextView) itemView.findViewById(R.id.list_item_name_text);
             mAgeTextView = (TextView) itemView.findViewById(R.id.list_item_age_text);
         }
@@ -200,6 +220,40 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
             Log.d("bind Model", testModel.getName() + " " + testModel.getAge());
             mNameTextView.setText(mTestModel.getName());
             mAgeTextView.setText(String.valueOf(mTestModel.getAge()));
+        }
+    }
+
+    private class ActionModeHolder extends RecyclerView.ViewHolder {
+
+        private TestModel mTestModel;
+        private CheckBox mItemCheckBox;
+        private TextView mNameTextView;
+        private TextView mAgeTextView;
+
+        public ActionModeHolder(View itemView) {
+            super(itemView);
+
+            mItemCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_check_box);
+            mNameTextView = (TextView) itemView.findViewById(R.id.list_item_name_text);
+            mAgeTextView = (TextView) itemView.findViewById(R.id.list_item_age_text);
+        }
+
+        public void bindTestModel(TestModel testModel) {
+            mTestModel = testModel;
+            Log.d("bind Model", testModel.getName() + " " + testModel.getAge());
+            mNameTextView.setText(mTestModel.getName());
+            mAgeTextView.setText(String.valueOf(mTestModel.getAge()));
+            mItemCheckBox.setVisibility(View.VISIBLE);
+//            mItemCheckBox.animate()
+//                    .translationX(mItemCheckBox.getWidth())
+//                    .setDuration(1000)
+//                    .setListener(new AnimatorListenerAdapter() {
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            super.onAnimationEnd(animation);
+//                            mItemCheckBox.setVisibility(View.VISIBLE);
+//                        }
+//                    });
         }
     }
 

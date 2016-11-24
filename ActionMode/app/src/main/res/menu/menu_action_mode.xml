@@ -2,23 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_mode_settings1"
+        android:id="@+id/action_delete"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/action_delete"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_mode_settings2"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_mode_settings3"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/action_mode_settings4"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom"/>
+    <!--<item-->
+        <!--android:id="@+id/action_mode_settings2"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="always"/>-->
+    <!--<item-->
+        <!--android:id="@+id/action_mode_settings3"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="ifRoom"/>-->
+    <!--<item-->
+        <!--android:id="@+id/action_mode_settings4"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="ifRoom"/>-->
 </menu>

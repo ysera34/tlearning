@@ -29,7 +29,6 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
     private ActionModeAdapter mActionModeAdapter;
 
     private TextView mActionModeTestTextView;
-    private int mActionCount = 0;
     private boolean mActionModeActive = false;
 
     public static Fragment newInstance() {
@@ -45,6 +44,7 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         mModels = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             TestModel testModel = new TestModel();
@@ -62,9 +62,10 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
 //        return super.onCreateView(inflater, container, savedInstanceState);
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View view = layoutInflater.inflate(R.layout.fragment_action_mode, container, false);
-        (view.findViewById(R.id.action_mode_button)).setOnClickListener(this);
+//        (view.findViewById(R.id.action_mode_button)).setOnClickListener(this);
+        (view.findViewById(R.id.action_mode_button)).setVisibility(View.GONE);
         mActionModeTestTextView = (TextView) view.findViewById(R.id.action_mode_test_text_view);
-
+        mActionModeTestTextView.setVisibility(View.GONE);
         mTestRecyclerView = (RecyclerView) view.findViewById(R.id.action_mode_recycler_view);
         mTestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
@@ -83,11 +84,11 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.action_mode_button :
-                Toast.makeText(getActivity(), "Action Mode Button", Toast.LENGTH_SHORT).show();
-                if(!mActionModeActive) {
-                    getActivity().startActionMode(mActionModeCallback);
-                    mActionModeActive = true;
-                }
+//                Toast.makeText(getActivity(), "Action Mode Button", Toast.LENGTH_SHORT).show();
+//                if(!mActionModeActive) {
+//                    getActivity().startActionMode(mActionModeCallback);
+//                    mActionModeActive = true;
+//                }
                 break;
         }
     }
@@ -102,23 +103,21 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
             getActivity().getMenuInflater().inflate(R.menu.menu_action_mode, menu);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 statusBarColor = getActivity().getWindow().getStatusBarColor();
-                getActivity().getWindow().setStatusBarColor(0xFF555555);
+                getActivity().getWindow().setStatusBarColor(0xFFEEEEEE);
             }
             return true;
         }
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-//            ((MainActivity) getContext()).getSupportActionBar().hide();
             return false;
         }
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.action_mode_settings1:
-                    mActionCount++;
-                    mActionModeTestTextView.setText(String.valueOf(mActionCount));
+                case R.id.action_delete:
+                    Toast.makeText(getActivity(), "선택하신 항목이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     mode.finish();
                     return true;
             }
@@ -128,22 +127,32 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //return to "old" color of status bar
                 getActivity().getWindow().setStatusBarColor(statusBarColor);
             }
-//            ((MainActivity) getContext()).getSupportActionBar().show();
-
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    ((MainActivity) getContext()).getSupportActionBar().show();
-//                }
-//            }, 300);
-
             mActionModeActive = false;
-//            ((MainActivity) getContext()).getSupportActionBar().show();
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(getActivity(), "프레그먼트에서 눌렸어요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Action Mode Button", Toast.LENGTH_SHORT).show();
+            if(!mActionModeActive) {
+                getActivity().startActionMode(mActionModeCallback);
+                mActionModeActive = true;
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 
     private class ActionModeAdapter extends RecyclerView.Adapter<ActionModeHolder> {

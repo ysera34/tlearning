@@ -71,6 +71,7 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         mActionModeTestTextView.setVisibility(View.GONE);
         mTestRecyclerView = (RecyclerView) view.findViewById(R.id.action_mode_recycler_view);
         mTestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mTestRecyclerView.getRecycledViewPool().setMaxRecycledViews(ACTION_MODE_VIEW, 30);
         return view;
     }
 
@@ -162,7 +163,6 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
             }
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -178,6 +178,17 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(R.layout.list_item_action_mode, parent, false);
+
+            if (viewType == ACTION_MODE_VIEW) {
+                ActionModeHolder holder = new ActionModeHolder(view);
+                holder.setIsRecyclable(false);
+                return holder;
+            }
+            StaticModeHolder holder = new StaticModeHolder(view);
+            holder.setIsRecyclable(false);
+            return holder;
+
+            /*
             if (mActionModeActive) {
 //                return new ActionModeHolder(view);
                 ActionModeHolder holder = new ActionModeHolder(view);
@@ -189,6 +200,7 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
                 holder.setIsRecyclable(false);
                 return holder;
             }
+            */
         }
 
         @Override
@@ -205,7 +217,30 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         public int getItemCount() {
             return mTestModels.size();
         }
+
+//        @Override
+//        public int getItemViewType(int position) {
+//            if (mActionModeActive) {
+//                return ACTION_MODE_VIEW;
+//            }
+//            return super.getItemViewType(position);
+//        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (mActionModeActive) {
+                return ACTION_MODE_VIEW;
+            }
+            return position;
+        }
     }
+
+    private static final int ACTION_MODE_VIEW = -1;
 
     private class StaticModeHolder extends RecyclerView.ViewHolder {
 
@@ -247,8 +282,10 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
 
                     if(isChecked){
                         mCheckedModels.add(mTestModel);
+                        mTestModel.setCheck(true);
                     } else {
                         mCheckedModels.remove(mTestModel);
+                        mTestModel.setCheck(false);
                     }
                 }
             });
@@ -262,6 +299,13 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
             mNameTextView.setText(mTestModel.getName());
             mAgeTextView.setText(String.valueOf(mTestModel.getAge()));
             mItemCheckBox.setVisibility(View.VISIBLE);
+            mItemCheckBox.setChecked(mTestModel.isCheck());
+//            TranslateAnimation animate = new TranslateAnimation(0,-mItemCheckBox.getWidth(),0,0);
+//            animate.setDuration(500);
+//            animate.setFillAfter(true);
+//            mItemCheckBox.startAnimation(animate);
+//            mItemCheckBox.setVisibility(View.VISIBLE);
+
 //            mItemCheckBox.animate()
 //                    .translationX(mItemCheckBox.getWidth())
 //                    .setDuration(1000)
@@ -294,6 +338,7 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
         private UUID mId;
         private String name;
         private int age;
+        private boolean isCheck;
 
         public TestModel() {
             mId = UUID.randomUUID();
@@ -321,6 +366,14 @@ public class ActionModeFragment extends Fragment implements View.OnClickListener
 
         public void setAge(int age) {
             this.age = age;
+        }
+
+        public boolean isCheck() {
+            return isCheck;
+        }
+
+        public void setCheck(boolean check) {
+            isCheck = check;
         }
     }
 }
